@@ -1,0 +1,252 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+基础编程
+output: html_document
+editor_options: 
+chunk_output_type: console
+#序
+rm(list = ls())                    #清理系统内存
+options(digits = 4)                #结果输出位数
+par(mar=c(4,4,1.5,1)+0.1,cex=0.8)  #图形修饰
+UG=read.csv('UGdata.csv')          #读取数据
+UG                                 #直接输入对象名可显示具体内容
+summary(UG)                        #计算基本统计量   
+t.test(height~sex,data=UG)         #均值检验
+fm=lm(weight~height,data=UG)       #模型建立
+fm
+summary(fm)                        #模型检验
+plot(weight~height,data=UG)        #散点图
+abline(fm)                         #回归线
+
+options(digi =3)      #设置小数有效位数
+par(mar=c(4,4,2,1))   #设置图形输入参数
+x=rnorm(100)          #生成100个标准正态分布随机数
+x
+hist(x,prob=T)
+curve(dnorm(x),add=T)
+#在R语言中输入数据
+##直接输入
+X=c(164,162,186,165,165,187,169,151,157)  #向量函数c命令可用于直接输入身高等信息
+X                                         #R语言中用变量名来显示数据
+##从外部文件输入数据
+###剪贴板
+UG=read.table("clipboard",header = T)     #UG为数据框名；clipboard为剪切板；header=T意味读入变量名
+T
+UG
+###从文本文件读取路径用双斜杠//
+UG=read.table("UGdata.txt",header = T)    #header=T选项用来指定第一行是标题行，并因此省略文件中给定的行标签
+UG
+###从其他统计软件导入
+library(foreign)
+RE=read.dta("Spiritual Life Study of Chinese Residents.DTA") #read.文件格式("文件名")
+RE                                        #以现有的水平看不好用有很多的缺失值
+
+#R语言的数据对象
+##向量vector
+x=c(1,3,5,7,2,4,6,8);x                    #用参数c赋值组成的向量x
+i=1:9;i                                   #正则序列用“：”符号产生
+j=9:1;j
+seq(1,10,2)                               #sqe(from,to,by)
+seq(1,10)
+seq(10,1,-1)
+seq(0.5,9.5,length=20)
+1:10
+1:10-1
+1:10*2
+2:60*2+1
+a=2:60*2+1
+a[5]                                      #显示第五个
+a[-5]                                     #不显示第五个
+a[1:5]                                    #显示第一到第五
+a[-(1:5)]
+a[c(2,4,7)]                             #显示第二、四、七
+a[3:8]
+a[a<20]                                   #显示小于20的
+a[a>30 & a<50]
+a[a[3]]
+seq(1,10,2)                               #sqe(from,to,by)
+seq(1,10)
+seq(10,1,-1)
+seq(0.5,9.5,length=20)
+letters(1:30)                             #产生字母
+###新建向量which()函数
+a=c(2,3,4,2,5,1,6,3,2,5,8,5,7,3)
+which.max(a)
+which.min(a)
+a[which.max(a)]
+which(a==2)
+a[which(a==2)]
+which(a>5)
+a[which(a>5)]
+##rev()函数，sort()函数
+a=1:20
+a
+rev(a)                                    #颠倒
+a=c(2,3,4,2,5,1,6,3,2,5,8,5,7,3)
+sort(a)                                   #排序
+rev(sort(a))
+##生成矩阵matrix()
+a1=c(1:12)
+matrix(a1,nrow = 3,ncol = 4)              #nrow行数，ncol列数
+matrix(a1,nrow = 4,ncol = 3)
+matrix(a1,nrow = 4,ncol = 3,byrow = T)    #byrow
+###矩阵运算
+####函数t(),矩阵加减
+a=matrix(1:12,nrow = 3,ncol = 4)
+a
+t(a)
+a=b=matrix(1:12,nrow = 3,ncol = 4)
+a+b
+a-b
+####矩阵相乘，函数diag()
+a=matrix(1:12,nrow = 3,ncol = 4)
+b=matrix(1:12,nrow = 4,ncol = 3)
+a%*%b
+a=matrix(1:16,nrow = 4,ncol = 4)
+a
+diag(a)
+diag(diag(a))
+diag(4)
+####矩阵求逆，函数rnorm(),solve()
+a=matrix(rnorm(16),4,4)                   #rnorm产生随机数
+a
+solve(a)                                  #solve产生里矩阵
+####函数solve(a,b)
+a=matrix(rnorm(16),4,4)
+a
+b=c(1:4)
+b
+solve(a,b)
+###求矩阵的特征值与特征向量
+####函数eigen()
+a=diag(4)+1
+a
+a.e=eigen(a,symmetric = T)
+a.e
+a.e$vectors%*%diag(a.e$values)%*%t(a.e$vectors)
+##数据框
+x1=c(10,13,45,26,23,12,24,78,23,43,31,56)
+x2=c(20,65,32,32,27,87,60,13,42,51,77,35)
+x=data.frame(x1,x2)                       #data.frame()函数向量长度一致
+x
+(x=data.frame('重量'=x1,'运费'=x2))
+plot(x)                              #画散点图函数plot()
+
+#函数类型
+##R语言创建向量和矩阵；函数c(),length(),mode(),rbind(),cbind()
+x1=c(2,4,6,8,0)                           #数值类型
+mode(x1)                                  #mode检验类型
+length(x1)                                #length计算数据长度
+x1[3]                                     #取组x1第三个数
+a1=c(1:100)                               #1到100
+x2=c(1,3,5,7,9)
+rbind(x1,x2)                              #按照行把x1,x2组成矩阵
+cbind(x1,x2)                              #按照列
+##R语言求平均值，和，；连乘，最值，方差，标准差；函数mean(),sum(),min(),max(),var(),sd(),prod()
+x=(1:100)
+mean(x)
+sum(x)
+max(x)
+min(x)
+var(x)                                    #方差_数据离散
+prod(x)                                   #连乘
+sd(x)                                     #标准差
+##循环语句
+###for语句
+for (i in 1:59) {a[i]=i*2+3}
+a
+b=0
+for (i in 1:59) {a[i]=i*2+3;b[i]=i*5-4}
+b
+###while语句
+a[1]=5
+i=1
+while(a[i]<121){i=i+1;a[i]=a[i-1]+2}
+a
+##R脚本
+source()函数，print()函数
+source("f:\\R\\Learing\\Learning R\\code\\l.R")
+##例子模拟产生统计专业同学名单(学号区分)，记录数学分析，线性代数，概率统计三科成绩
+num=seq(10378001,10378100)
+num
+###分布函数：正态分布函数rnorm(),泊松分布函数rpois(),指数分布函数rexp(),Gamma分布函数rgamma(),均匀分布函数runif(),二项分布函数rbinom(),几何分布函数rgeom()
+x1=round(runif(100,min = 80,max = 100))
+x1
+x2=round(rnorm(100,mean = 80,sd=7))
+x2
+x3=round(rnorm(100,mean = 83,sd=18))
+x3
+x3[which(x3>100)]=100
+x3
+###合成数据框并保存到硬盘
+x=data.frame(num,x1,x2,x3)
+x
+write.table(x,file="f:\\R\\Learning\\Learning R\\mark.txt",col.names=F,row.names=F,sep=" ")
+###计算各科平均分,函数mean(),colMeans(),apply()
+mean(x)
+colMeans(x)
+colMeans(x)[c("x1","x2","x3")]
+apply(x,2,mean)
+###求各科最高最低分，函数max(),min(),apply()
+apply(x,2,max)
+apply(x,2,min)
+###求出每个人的总分
+apply(x[c("x1","x2","x3")],1,sum)
+###总分最高的同学
+which.max(apply(x[c("x1","x2","x3")],1,sum))
+x$num[which.max(apply(x[c("x1","x2","x3")],1,sum))]
+#数据可视化
+##绘制直方图函数hist();对x1进行直方图分析；
+hist(x$x1)
+hist(x$X2)
+##散点图绘制函数plot();探索各科成绩的关联关系；
+plot(x1,x2)
+plot(x$x1,x$x2)
+###进一步设置xaxs="i",#Set x axis style as internal;yaxs="i",#Set y axis style as internal;col="red",#Set the color of plotting symbol to red;pch=19)#Set the plotting symbol to filled dots
+plot(x$x1,x$x2,main="数学分析与线性代数成绩的关系",xlab="数学分析",ylab="线性代数",xlim=c(60,100),ylim=c(60,100),xaxs="i",yaxs="i",col="red",pch=19)
+###连线图
+a=c(2,3,4,5,6)
+b=c(4,7,8,9,12)
+plot(a,b,type="l")
+####多条曲线的效果plot()高水平作图lines()低水平，先用高水平，再用低水平;lwd线宽
+plot(rain$Tokyo,type="l",col="red",ylim=c(0,300),main="Monthly Rainfall in major cities,xlab="Month of Year",ylab="Rainfall(mm)",lwd=2)
+lines(rain$NewYork,type="l",col="blue",lwd=2)
+lines(rain$London,tupe="l",col="green",lwd=2)
+lines(rain$Berlin,type="l",col="orange",lwd=2)
+##列联表分析；列联函数table(),柱状图绘制函数barplot()
+table(x$x1)
+barplot(table(x$x1))
+##饼图；饼图绘制函数pie()
+pie(table(x$x1))
+##尾箱图；函数boxplot()
+boxplot(x1,x2,x3)
+boxplot(x$x1,x$x2,x$x3)
+###x[2:4]第二到四，col=c(第一，第二，第三)，notch()伤口
+boxplot(x[2:4],col=c("red","green","blue"),notch=T)
+###水平放置的箱尾图
+boxplot(x$x1,x$x2,x$x3,horizontal=T)
+##星相图stars();
+###每个观测单位的数值表示为一个图形
+###每个图形的每一个角表示一个变量，字符串会标注在图的下方
+###角线的长度表达值的大小
+stars(x[c("x1","x2","x3")])
+stars(x[c("x1","x2","x3")],full=T,draw.segment=T)
+stars(x[c("x1","x2","x3")],full=F,draw.segment=T)
+###脸谱图，安装aplpack包
+faces(x[c("x1","x2","x3")])
+##茎叶图
+stem(x$x1)
+##QQ图
+可用于判断是否为正态分布
+直线斜率是标准差，截距是均值
+点的分布越是接近直线，则越接近正态分布
+qqnorm(x1)
+qqline(x1)
+qqnorm(x3)
+qqline(x3)
+#R内置数据集
+mtcars
+
